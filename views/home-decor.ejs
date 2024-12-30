@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Home Decor</title>
+    <link rel="stylesheet" href="/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+<header class="amazon-header"></header>
+<script src="/header.js"></script>
+<script src="/cart.js"></script>
+<script src="/product-template.js"></script>
+
+<main class="amazon-products">
+    <div class="products-container" id="products-container">
+        <!-- Products will be dynamically loaded here -->
+    </div>
+</main>
+
+    <footer></footer>
+
+    <script>
+    fetch('/api/home-decor')
+            .then(response => response.json())
+            .then(products => {
+                if (products.data) products = products.data;
+                const container = document.getElementById('products-container');
+                container.innerHTML = products.map(product => createProductCard(product)).join('');
+            });
+    </script>
+    <script src="/footer.js"></script>
+</body>
+</html>

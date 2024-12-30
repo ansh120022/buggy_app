@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation - Buggy Store</title>
+    <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+    <header class="amazon-header"></header>
+    <script src="/header.js"></script>
+
+    <main class="confirmation-container">
+        <div class="confirmation-content">
+            <div class="confirmation-header">
+                <span class="checkmark">✓</span>
+                <h1>Your order is confirmed!</h1>
+                <p class="thank-you">Thanks for shopping! We won't send you an email when your order ships.</p>
+            </div>
+
+            <div class="order-info">
+                <p class="order-number">Order № <span id="orderId"></span></p>
+
+                <div class="delivery-section">
+                    <h2>Delivery Address:</h2>
+                    <div id="address-details" class="address-box"></div>
+                </div>
+
+                <div class="order-section">
+                    <h2>Order Items:</h2>
+                    <div id="items-list" class="items-list"></div>
+                    <div class="order-total">
+                        <span>Total:</span>
+                        <span id="order-total" class="total-price"></span>
+                    </div>
+                </div>
+            </div>
+
+            <a href="/" class="continue-shopping">Continue Shopping</a>
+        </div>
+    </main>
+
+    <footer></footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const order = JSON.parse(localStorage.getItem('lastOrder'));
+            if (!order) {
+                window.location.href = '/';
+                return;
+            }
+
+            document.getElementById('orderId').textContent = order.orderId;
+
+            const addressDetails = document.getElementById('address-details');
+            addressDetails.innerHTML = `
+                <p>${order.address.fullName}</p>
+                <p>${order.address.address}</p>
+                ${order.address.apartment ? `<p>${order.address.apartment}</p>` : ''}
+                <p>${order.address.city}, ${order.address.postcode}</p>
+                <p>Phone: ${order.address.phone}</p>
+            `;
+
+            const itemsList = document.getElementById('items-list');
+            itemsList.innerHTML = order.items.map(item => `
+                <div class="order-item">
+                    <img src="/images/${item.image}" alt="${item.name}" class="item-image">
+                    <div class="item-details">
+                        <h3>${item.name}</h3>
+                        <p>Quantity: ${item.quantity}</p>
+                        <p class="item-price">$${(item.price * item.quantity).toFixed(2)}</p>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('order-total').textContent = `$${order.total.toFixed(2)}`;
+        });
+    </script>
+    <script src="/footer.js"></script>
+</body>
+</html>

@@ -1,3 +1,3 @@
 # buggy_app
 
-A tiny up for my SQA students to pratice bug discovery
+A small app for my SQA students to practice finding bugs.
